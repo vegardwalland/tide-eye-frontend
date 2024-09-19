@@ -1,23 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
 
-const HarborSelector = ({ onSelect }) => {
-  const [harbors, setHarbors] = useState([]);  // Initialize as an empty array
+const HarborSelector = ({ harbors, onSelect }) => {
   const [selectedHarbor, setSelectedHarbor] = useState('');  // Stores the selected harbor
-
-  // Fetch the harbor list when the component mounts
-  useEffect(() => {
-    axios.get('http://localhost:8080/api/harbors')
-      .then(response => {
-        // Ensure the response is an array and update the state
-        if (Array.isArray(response.data)) {
-          setHarbors(response.data);  // Set the harbors to the data returned by the backend
-        } else {
-          console.error("Unexpected response format:", response.data);
-        }
-      })
-      .catch(err => console.error("Error fetching harbors:", err));
-  }, []);
 
   // Handle when a user selects a harbor
   const handleSelect = (e) => {
@@ -28,11 +12,11 @@ const HarborSelector = ({ onSelect }) => {
 
   return (
     <div>
-      <label htmlFor="harbor">Select Harbor:</label>
+      <label htmlFor="harbor">Select Harbor: </label>
       <select id="harbor" value={selectedHarbor} onChange={handleSelect}>
         <option value="">Select a harbor</option>
-        {harbors.map(harbor => (
-          <option key={harbor} value={harbor}>
+        {harbors.map((harbor, index) => (
+          <option key={index} value={harbor}>
             {harbor}
           </option>
         ))}

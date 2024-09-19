@@ -1,6 +1,5 @@
-// TideChart.jsx
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+// src/components/TideChart.jsx
+import React from 'react';
 import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -13,7 +12,6 @@ import {
   Legend,
 } from 'chart.js';
 
-// Register required components
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -24,56 +22,33 @@ ChartJS.register(
   Legend
 );
 
-const TideChart = () => {
-  const [tideData, setTideData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+const TideChart = ({ tideData }) => {
+  if (!tideData) return <div>No data available</div>;
 
-  useEffect(() => {
-    const fetchTideData = async () => {
-      try {
-        const response = await axios.get('/api/tides/oslo');
-        setTideData(response.data.surgeData || []);
-      } catch (err) {
-        setError(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchTideData();
-  }, []);
-
-  useEffect(() => {
-    // Cleanup chart instance when component unmounts or data changes
-    return () => {
-      if (window.myChart) {
-        window.myChart.destroy();
-      }
-    };
-  }, [tideData]);
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error fetching tide data</div>;
+  // Construct labels and dataset from the fetched tide data
+  const chartLabels = tideData.tideData.surgeData.map(data => `${data.year}-${data.month}-${data.day} ${data.hour}:00`);
+  const surgeData = tideData.tideData.surgeData.map(data => data.surge);
+  const tideDataValues = tideData.tideData.surgeData.map(data => data.tide);
+  const totalData = tideData.tideData.surgeData.map(data => data.total);
 
   const chartData = {
-    labels: tideData.map(data => `${data.hour}:${data.minute}`),
+    labels: chartLabels,
     datasets: [
       {
         label: 'Surge',
-        data: tideData.map(data => data.surge),
+        data: surgeData,
         borderColor: 'blue',
         fill: false,
       },
       {
         label: 'Tide',
-        data: tideData.map(data => data.tide),
+        data: tideDataValues,
         borderColor: 'green',
         fill: false,
       },
       {
         label: 'Total',
-        data: tideData.map(data => data.total),
+        data: totalData,
         borderColor: 'red',
         fill: false,
       },

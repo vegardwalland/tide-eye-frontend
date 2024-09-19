@@ -1,13 +1,13 @@
 // src/App.jsx
 import React from 'react';
 import Dashboard from './components/Dashboard';
-import './App.css'; // Optional: Import your CSS file for styling
+import './App.css';
 
 const App = () => {
   return (
-    <div className="app-container">
+    <div className="app-container" >
       <header className="app-header">
-        <h1>Tidal Data Dashboard</h1>
+        <h1>Tide-Eye</h1>
       </header>
       <main>
         <Dashboard />
