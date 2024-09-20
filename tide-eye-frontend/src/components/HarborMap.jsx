@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
-// Custom component to control the map instance
+// Control the map instance
 const MapControl = ({ bounds }) => {
   const map = useMap();
   
@@ -14,6 +14,7 @@ const MapControl = ({ bounds }) => {
 
   return null;
 };
+
 
 const HarborMap = ({ selectedHarbors, harbors }) => {
   const [bounds, setBounds] = useState(null);
@@ -39,8 +40,8 @@ const HarborMap = ({ selectedHarbors, harbors }) => {
 
   return (
     <MapContainer
-      center={[60.472, 8.4689]} // Default center, should be overridden by fitBounds
-      zoom={5} // Default zoom, should be overridden by fitBounds
+      center={[60.472, 8.4689]} // Default center
+      zoom={5} // Default zoom
       style={{ height: '500px', width: '100%' }}
       whenCreated={mapInstance => { mapRef.current = mapInstance; }}
     >
