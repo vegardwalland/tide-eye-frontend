@@ -9,6 +9,7 @@ const Dashboard = () => {
   const [harborData, setHarborData] = useState([null, null]);
   const [harbors, setHarbors] = useState([]);
 
+  // Get all the harbors from the backend
   useEffect(() => {
     axios.get('http://localhost:8080/api/harbors')
       .then(response => {
@@ -21,6 +22,7 @@ const Dashboard = () => {
       .catch(err => console.error("Error fetching harbors:", err));
   }, []);
 
+  // Get tide data for the selected harbors
   useEffect(() => {
     selectedHarbors.forEach((harbor, index) => {
       if (harbor) {
@@ -40,6 +42,7 @@ const Dashboard = () => {
   // Extract just the names for the HarborSelector
   const harborNames = harbors.map(harbor => harbor.name);
 
+  // Set the harbors when a user selects them 
   const handleSelect = (index, value) => {
     const newSelectedHarbors = [...selectedHarbors];
     newSelectedHarbors[index] = value;
@@ -48,6 +51,7 @@ const Dashboard = () => {
 
   return (
     <div>
+      {/* Render the two harbor selectors */}
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         <HarborSelector
           harbors={harborNames}
@@ -62,6 +66,7 @@ const Dashboard = () => {
       </div>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         <div>
+          {/* Render the data for the two harbors */}
           {harborData[0] && (
             <div>
               <h2>Data for {selectedHarbors[0]}</h2>
